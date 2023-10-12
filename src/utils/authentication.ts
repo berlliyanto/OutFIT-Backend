@@ -10,15 +10,15 @@ class Authentication {
         return bcrypt.compare(password, hashedPassword);
     }
 
-    public static generateToken = (id: number, name: string, email: string, password: string): string => {
+    public static generateToken = (id: number, name: string, email: string, image: string): string => {
         const secretKey: string = process.env['JWT_SECRET_KEY'] || "secret";
         const token: string = jwt.sign(
             {
-                id, name, email, password
+                id, name, email, image
             }, 
             secretKey,
             {
-                expiresIn: "3h"
+                expiresIn: "24h"
             }
         );
 

@@ -6,6 +6,7 @@ const validateRegister = [
     check('password').isLength({min: 6}),
     check('name').isString(),
     (req: Request, res: Response, next: NextFunction) => {
+        console.log(req.body);
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
