@@ -22,6 +22,26 @@ class AuthService extends BaseServices {
         }
     }
 
+    async profile (params: object): Promise<any> {
+        const sql: string = "SELECT * FROM user WHERE id = ?";
+        try {
+            const [rows, fields] = await this.promiseConnection.query(sql, params);
+            return rows;
+        } catch (error) {
+            return error
+        }
+    }
+
+    async updateProfile (params: object): Promise<any> {
+        const sql: string = "UPDATE user SET ? WHERE id = ?";
+        try {
+            const [rows, fields] = await this.promiseConnection.query(sql, params);
+            return rows;
+        }catch(error){
+            return error;
+        }
+    }
+
 }
 
 const authService = new AuthService;

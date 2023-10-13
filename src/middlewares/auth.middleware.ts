@@ -12,8 +12,7 @@ export const auth = (req: Request, res: Response, next: NextFunction): any => {
     try {
         const credential: string | object = jwt.verify(token, secretKey);
         if (credential) {
-            req.app.locals['credential'] = credential;
-            next();
+            return next();
         }
         return res.status(401).send({ msg: "Token Invalid" });
     } catch (error) {

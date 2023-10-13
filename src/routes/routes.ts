@@ -5,7 +5,7 @@ import RoutePaths from './routes_name.js';
 import BaseRoutes from './routes_base.js';
 import AdminController from '../controllers/admin/admin.controller.js';
 import authController from '../controllers/auth/auth.controller.js';
-import validateRegister from '../middlewares/auth.validator.js';
+import validateRegister from '../middlewares/register.validator.js';
 import upload from '../utils/uploadImages.js';
 
 class Routes extends BaseRoutes {
@@ -14,13 +14,10 @@ class Routes extends BaseRoutes {
             res.send('No Routes Found');
         });
 
-        this.router.post(RoutePaths.DEFAULT, upload.single('image'), (req: Request, res: Response) => {
-            res.send(req.file);
-        });
-
-        this.router.post(RoutePaths.AUTH_REGISTER,  upload.single('image'),validateRegister, authController.register);
+        this.router.post(RoutePaths.AUTH_REGISTER,  upload.single('image'), validateRegister, authController.register);
         this.router.post(RoutePaths.AUTH_LOGIN, authController.login);
         this.router.get(RoutePaths.AUTH_PROFILE, auth, authController.profile);
+        this.router.put(RoutePaths.AUTH_PROFILE, auth, upload.single('image'), authController.updateProfile);
 
         this.router.get(RoutePaths.GET_ADMINS, AdminController.showAll);
         this.router.get(RoutePaths.GET_ADMIN_BYID, AdminController.show);

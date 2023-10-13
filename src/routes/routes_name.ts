@@ -2,7 +2,7 @@ abstract class RoutePaths {
     static DEFAULT: string = "/";
     static AUTH_LOGIN: string = "/login";
     static AUTH_REGISTER: string = "/register";
-    static AUTH_PROFILE: string = "/profile";
+    static AUTH_PROFILE: string = "/profile/:id";
 
     static GET_ADMINS: string = "/admins";
     static GET_ADMIN_BYID: string = "/admin/:id";

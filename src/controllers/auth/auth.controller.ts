@@ -10,11 +10,13 @@ class AuthController {
             const user = await authService.login(email);
             if (user.length > 0) {
                 const userData = user[0];
+                console.log(userData)
                 const hashedPassword: string = userData.password;
                 const compare = await Authentication.passwordCompare(password, hashedPassword);
                 if (compare) {
                     const token: string = Authentication.generateToken(userData.id, userData.name, userData.email, userData.image);
                     return res.status(200).send({
+                        user: userData,
                         token
                     });
                 }
@@ -26,7 +28,6 @@ class AuthController {
         }
     }
     async register(req: Request, res: Response): Promise<Response> {
-        console.log(req.file);
         const user: UserModel = req.body;
         const image: string | undefined = req.file?.filename;
         user.image = image;
@@ -35,14 +36,36 @@ class AuthController {
         user.password = hashedPassword;
         try {
             const response = await authService.register(user);
-            return res.send(response);
+            return res.send({
+                response: response,
+                data: req.body
+            });
         } catch (error) {
             return res.send(error);
         }
     }
 
-    profile(req: Request, res: Response): Response {
-        return res.send(req.app.locals['credential']);
+    async profile(req: Request, res: Response): Promise<Response> {
+        const id: number | string = req.params['id'];
+        try {
+            const response = await authService.profile([id]);
+            return res.status(200).send(...response);
+        } catch (error) {
+            return res.status(400).send(error);
+        }
+    }
+
+    async updateProfile(req: Request, res: Response): Promise<Response> {
+        const user: UserModel = req.body;
+        const image: string | undefined = req.file?.filename;
+        image ? user.image = image : null;
+        const id: number | string = req.params['id'];
+        try {
+            const response = await authService.updateProfile([user, id]);
+            return res.status(200).send(response);
+        } catch (error) {
+            return res.status(400).send(error);
+        }
     }
 }
 
