@@ -42,6 +42,37 @@ class AuthService extends BaseServices {
         }
     }
 
+    async forgotPassword(params: object): Promise<any> {
+        const sql: string = "SELECT * FROM user WHERE email = ?";
+        try{
+            const [rows, fields] = await this.promiseConnection.query(sql, params);
+            return rows;
+        } catch (error){
+            return error;
+        }
+    }
+
+    async resetPasswordGetUser(params:object): Promise<any> {
+        const sql: string = "SELECT * FROM user WHERE id = ?";
+        try{
+            const [rows, fields] = await this.promiseConnection.query(sql, params);
+            return rows;
+        } catch (error){
+            return error;
+        }
+    }
+
+    async resetPasswordUpdate(params: object): Promise<any> {
+        console.log(params);
+        const sql: string = "UPDATE user SET password = ? WHERE id = ?";
+        try{
+            const [rows, fields] = await this.promiseConnection.query(sql, params);
+            return rows;
+        } catch (error){
+            return error;
+        }
+    }
+
 }
 
 const authService = new AuthService;

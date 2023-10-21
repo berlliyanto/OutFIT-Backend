@@ -10,7 +10,6 @@ class UploadImages {
                 cb(null, 'public/avatar');
               },
               filename: (req, file, cb) => {
-                console.log(req.body.email);
                 cb(null, file.fieldname + '_' + req.body.email + path.extname(file.originalname));
               },
         })

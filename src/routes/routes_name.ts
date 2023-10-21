@@ -3,6 +3,8 @@ abstract class RoutePaths {
     static AUTH_LOGIN: string = "/login";
     static AUTH_REGISTER: string = "/register";
     static AUTH_PROFILE: string = "/profile/:id";
+    static AUTH_FORGOTPW: string = "/forgot-password";
+    static AUTH_RESETPW: string = "/reset-password/:id/:token";
 
     static GET_ADMINS: string = "/admins";
     static GET_ADMIN_BYID: string = "/admin/:id";
