@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import authService from "../../services/auth.service.js";
 import UserModel from "../../models/user.model.js";
 import Authentication from "../../utils/authentication.js";
+import mailer from "../../utils/mailer.js";
 
 class AuthController {
   async login(req: Request, res: Response): Promise<Response> {
@@ -91,7 +92,7 @@ class AuthController {
         "JWT_" + password
       );
       const link: string = `http://localhost:5173/reset-password?id=${id}&token=${tokenData}`;
-      console.log(link);
+      await mailer.sendMailResetPassword(email, link)
       return res.status(200).send({
         message: "Password reset link has been sent to your email",
       });
@@ -102,10 +103,6 @@ class AuthController {
 
   async resetPassword(req: Request, res: Response): Promise<Response> {
     const { password, password2 } = req.body;
-    interface Ipayload {
-      name: string;
-      message: string;
-    }
 
     try {
       const { id, token } = req.params;
